@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">TMUI</string>
+
+    <string name="alert_error_title">錯誤訊息</string>
+    <!--常用一般字串-->
+    <string name="ok">確認</string>
+    <string name="cancel">取消</string>
+    <string name="system_error">系統發生異常</string>
+</resources>
