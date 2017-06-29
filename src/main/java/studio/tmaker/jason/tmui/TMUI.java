@@ -6,8 +6,17 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.os.AsyncTask;
+import android.widget.ImageView;
 import android.widget.Toast;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 /**
  * Created by jasontsai on 2017/6/15.
@@ -75,6 +84,24 @@ public class TMUI {
                 .show();
     }
 
+    public void dialog(final Activity activity, String title, String msg){
+        final String result = msg == null ? STRING_SYSYEM_ERROR : msg;
+        new AlertDialog.Builder(activity)
+                .setTitle(title)
+                .setMessage(result)
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                })
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                })
+                .show();
+    }
+
     public void toast(Activity activity, String msg) {
         Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
     }
@@ -89,5 +116,45 @@ public class TMUI {
     public void popActivity(Activity exit) {
         exit.finish();
 //        exit.overridePendingTransition(R.anim.slide_left_in, R.anim.slide_right_out);
+    }
+
+    public void downloadImage(String url,final ImageView imageView) {
+        //建立一個AsyncTask執行緒進行圖片讀取動作，並帶入圖片連結網址路徑
+        new AsyncTask<String, Void, Bitmap>()
+        {
+            @Override
+            protected Bitmap doInBackground(String... params)
+            {
+                String url = params[0];
+                return getBitmapFromURL(url);
+            }
+
+            @Override
+            protected void onPostExecute(Bitmap result)
+            {
+                imageView.setImageBitmap(result);
+                super.onPostExecute(result);
+            }
+        }.execute(url);
+    }
+
+    //讀取網路圖片，型態為Bitmap
+    private static Bitmap getBitmapFromURL(String imageUrl)
+    {
+        try
+        {
+            URL url = new URL(imageUrl);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap bitmap = BitmapFactory.decodeStream(input);
+            return bitmap;
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
