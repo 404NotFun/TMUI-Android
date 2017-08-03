@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -71,11 +70,6 @@ public class TMUI {
         new AlertDialog.Builder(activity)
                 .setTitle(R.string.alert_error_title)
                 .setMessage(result)
-                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -89,14 +83,29 @@ public class TMUI {
         new AlertDialog.Builder(activity)
                 .setTitle(title)
                 .setMessage(result)
-                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                     }
                 })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                .show();
+    }
+
+    public void dialog(final Activity activity, String title, String msg, final DialogAction dialogAction) {
+        final String result = msg == null ? STRING_SYSYEM_ERROR : msg;
+        new AlertDialog.Builder(activity)
+                .setTitle(title)
+                .setMessage(result)
+                .setNeutralButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogAction.cancelOnClick();
+                    }
+                })
+                .setNegativeButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        dialogAction.confirmOnClick();
                     }
                 })
                 .show();
