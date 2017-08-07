@@ -3,12 +3,15 @@ package studio.tmaker.jason.tmui;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.util.Base64;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -55,6 +58,12 @@ public class TMUI {
         public int parseColor() {
             return Color.parseColor(code);
         }
+    }
+
+    public Bitmap imageFromBase64(String string) {
+        byte[] decodedString = Base64.decode(string, Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        return  decodedByte;
     }
 
     public void showProgressDialog(Activity activity,String title, String msg) {
