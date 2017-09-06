@@ -71,7 +71,9 @@ public class TMUI {
     }
 
     public void dismissProgressDialog() {
-        progressDialog.dismiss();
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
     }
 
     public void dialog(final Activity activity, String msg){
