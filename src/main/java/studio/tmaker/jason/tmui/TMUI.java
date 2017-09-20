@@ -89,12 +89,12 @@ public class TMUI {
                 .show();
     }
 
-    public void dialog(final Activity activity, String title, String msg){
+    public void dialog(final Activity activity, String title, String msg, String cancelBtnText){
         final String result = msg == null ? STRING_SYSYEM_ERROR : msg;
         new AlertDialog.Builder(activity)
                 .setTitle(title)
                 .setMessage(result)
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                .setNegativeButton(cancelBtnText, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                     }
